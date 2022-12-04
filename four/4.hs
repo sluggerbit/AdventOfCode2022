@@ -6,13 +6,14 @@ main = do
 
 numberOfContainedPairs :: (Int, Int) -> [String] -> (Int, Int)
 numberOfContainedPairs (i1, i2) [] = (i1, i2)
-numberOfContainedPairs (i1, i2) (s:ss) =  numberOfContainedPairs ((contains s all + i1), (contains s any + i2)) ss
+numberOfContainedPairs (i1, i2) (s:ss) =  numberOfContainedPairs (contains s all + i1, contains s any + i2) ss
 
+contains :: Num p => String -> ((Int -> Bool) -> [Int] -> Bool) -> p
 contains s b = do
     let (ls1, ls2) = doLsFromString s
-        b1 = b (\x -> x `elem` ls2) ls1
-        b2 = b (\x -> x `elem` ls1) ls2
-    if (b1 || b2) 
+        b1 = b (`elem` ls2) ls1
+        b2 = b (`elem` ls1) ls2
+    if b1 || b2
     then 1 
     else 0
 
