@@ -1,29 +1,17 @@
 main :: IO ()
 main = do
     input <- readFile "input.txt"
-    let x =   words input
-    --print $ containsPair (head x)
-    print $ numberOfContainedPairs (0, 0) x
+    print $ numberOfContainedPairs (0, 0) (words input)
     return ()
 
 numberOfContainedPairs :: (Int, Int) -> [String] -> (Int, Int)
 numberOfContainedPairs (i1, i2) [] = (i1, i2)
-numberOfContainedPairs (i1, i2) (s:ss) =  numberOfContainedPairs ((containsPair s + i1), (overlap s + i2)) ss
+numberOfContainedPairs (i1, i2) (s:ss) =  numberOfContainedPairs ((contains s all + i1), (contains s any + i2)) ss
 
-containsPair :: String -> Int
-containsPair s = do
+contains s b = do
     let (ls1, ls2) = doLsFromString s
-        b1 = all (\x -> x `elem` ls2) ls1
-        b2 = all (\x -> x `elem` ls1) ls2
-    if (b1 || b2) 
-    then 1 
-    else 0
-
-overlap :: String -> Int
-overlap s  = do
-    let (ls1, ls2) = doLsFromString s
-        b1 = any (\x -> x `elem` ls2) ls1
-        b2 = any (\x -> x `elem` ls1) ls2
+        b1 = b (\x -> x `elem` ls2) ls1
+        b2 = b (\x -> x `elem` ls1) ls2
     if (b1 || b2) 
     then 1 
     else 0
